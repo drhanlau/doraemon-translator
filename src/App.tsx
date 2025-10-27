@@ -4,9 +4,10 @@ export function App() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isSlangToEnglish, setIsSlangToEnglish] = useState(true);
   const handleTranslate = async () => {
     if (!input.trim()) {
-      setOutput('Please enter some Gen Z slang to translate!');
+      setOutput(isSlangToEnglish ? 'Please enter some Gen Z slang to translate!' : 'Please enter some plain English to convert!');
       return;
     }
 
@@ -19,11 +20,15 @@ export function App() {
         messages: [
           {
             role: 'system',
-            content: 'You are a helpful translator that converts Gen Z slang and internet language into clear, plain English. First provide the translation. Then provide explanations that people to understand what the slang means. If the input contains multiple slang terms, explain each one. Be friendly and informative. Output in html format without markdown prefix'
+            content: isSlangToEnglish
+              ? 'You are a helpful translator that converts Gen Z slang and internet language into clear, plain English. First provide the translation. Then provide explanations that people to understand what the slang means. If the input contains multiple slang terms, explain each one. Be friendly and informative. Output in html format without markdown prefix'
+              : 'You are a helpful translator that converts plain English into Gen Z slang and internet language. First provide the slang version. Then provide explanations of the slang terms used. Be creative and use authentic Gen Z slang. Be friendly and informative. Output in html format without markdown prefix'
           },
           {
             role: 'user',
-            content: `Translate this Gen Z slang to plain English: "${input}"`
+            content: isSlangToEnglish
+              ? `Translate this Gen Z slang to plain English: "${input}"`
+              : `Convert this plain English to Gen Z slang: "${input}"`
           }
         ],
         max_tokens: 200,
@@ -88,8 +93,29 @@ export function App() {
             </div>
           </div>
           <p className="text-center mt-2 text-blue-100">
-            Translate Gen Z Slang to Plain English!
+            {isSlangToEnglish ? 'Translate Gen Z Slang to Plain English!' : 'Convert Plain English to Gen Z Slang!'}
           </p>
+          {/* Translation mode toggle */}
+          <div className="flex items-center justify-center gap-4 mt-4">
+            <span className={`text-sm font-medium ${!isSlangToEnglish ? 'text-blue-200' : 'text-white'}`}>
+              English to Slang
+            </span>
+            <button
+              onClick={() => setIsSlangToEnglish(!isSlangToEnglish)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 ${
+                isSlangToEnglish ? 'bg-blue-400' : 'bg-blue-600'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  isSlangToEnglish ? 'translate-x-1' : 'translate-x-6'
+                }`}
+              />
+            </button>
+            <span className={`text-sm font-medium ${isSlangToEnglish ? 'text-blue-200' : 'text-white'}`}>
+              Slang to English
+            </span>
+          </div>
         </div>
         {/* Main translator area */}
         <div className="relative grid grid-cols-1 md:grid-cols-2 gap-0 p-8">
@@ -97,9 +123,17 @@ export function App() {
           <div className="flex flex-col gap-4 pr-0 md:pr-4">
             <div className="bg-white rounded-2xl p-4 shadow-lg border-4 border-blue-400">
               <label className="block text-lg font-bold text-blue-600 mb-2">
-                Gen Z Slang Input
+                {isSlangToEnglish ? 'Gen Z Slang Input' : 'Plain English Input'}
               </label>
-              <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="Type your Gen Z slang here... (e.g., 'no cap, that's bussin fr fr')" className="w-full h-64 p-4 border-2 border-blue-300 rounded-xl resize-none focus:outline-none focus:border-blue-500 text-gray-800" />
+              <textarea
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                placeholder={isSlangToEnglish
+                  ? "Type your Gen Z slang here... (e.g., 'no cap, that's bussin fr fr')"
+                  : "Type your plain English here... (e.g., 'That's really cool and amazing')"
+                }
+                className="w-full h-64 p-4 border-2 border-blue-300 rounded-xl resize-none focus:outline-none focus:border-blue-500 text-gray-800"
+              />
             </div>
           </div>
           {/* Doraemon's pocket divider */}
@@ -118,7 +152,7 @@ export function App() {
           <div className="flex flex-col gap-4 pl-0 md:pl-4 mt-8 md:mt-0">
             <div className="bg-white rounded-2xl p-4 shadow-lg border-4 border-yellow-400">
               <label className="block text-lg font-bold text-yellow-600 mb-2">
-                Plain English Translation
+                {isSlangToEnglish ? 'Plain English Translation' : 'Gen Z Slang Translation'}
               </label>
               <div
                 className="w-full h-64 p-4 border-2 border-yellow-300 rounded-xl bg-yellow-50 text-gray-800 overflow-y-auto [&_p]:mb-5"
