@@ -80,7 +80,7 @@ export function App() {
                 <div className="w-8 h-8 bg-white rounded-full" />
               </div>
             </div>
-            <h1 className="text-4xl font-bold">Doraemon Translator</h1>
+            <h1 className="text-4xl font-bold">Doraemon Translation Gummy</h1>
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
               <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
                 <div className="w-8 h-8 bg-white rounded-full" />
@@ -101,26 +101,6 @@ export function App() {
               </label>
               <textarea value={input} onChange={e => setInput(e.target.value)} placeholder="Type your Gen Z slang here... (e.g., 'no cap, that's bussin fr fr')" className="w-full h-64 p-4 border-2 border-blue-300 rounded-xl resize-none focus:outline-none focus:border-blue-500 text-gray-800" />
             </div>
-            <button
-              onClick={handleTranslate}
-              disabled={isLoading}
-              className={`px-8 py-4 rounded-full font-bold text-lg shadow-lg transition-all flex items-center justify-center gap-3 ${
-                isLoading
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-red-500 to-red-600 hover:shadow-xl transform hover:scale-105'
-              } text-white`}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-6 h-6 animate-spin" />
-                  Translating...
-                </>
-              ) : (
-                <>
-                  Translate <ArrowRightIcon className="w-6 h-6" />
-                </>
-              )}
-            </button>
           </div>
           {/* Doraemon's pocket divider */}
           <div className="hidden md:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center justify-center z-10">
@@ -147,13 +127,27 @@ export function App() {
                 }}
               />
             </div>
-            <div className="bg-green-100 border-2 border-green-400 rounded-xl p-4 text-sm text-green-800">
-              <p className="font-semibold">✅ Powered by OpenAI GPT-4o-mini:</p>
-              <p>
-                AI-powered translations are now active! Try any Gen Z slang and get instant, accurate translations.
-              </p>
-            </div>
           </div>
+        </div>
+        {/* Translate button spanning both columns */}
+        <div className="px-8 pb-4">
+          <button
+            onClick={handleTranslate}
+            disabled={isLoading}
+            className={`w-full px-8 py-4 rounded-full font-bold text-lg shadow-lg transition-all flex items-center justify-center gap-3 ${
+              isLoading
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-gradient-to-r from-red-500 to-red-600 hover:shadow-xl transform hover:scale-105'
+            } text-white`}
+          >
+            {isLoading ? (
+              <>Translating...</>
+            ) : (
+              <>
+                Translate <ArrowRightIcon className="w-6 h-6" />
+              </>
+            )}
+          </button>
         </div>
         {/* Doraemon footer decoration */}
         <div className="relative bg-gradient-to-r from-red-500 to-red-600 p-4">
