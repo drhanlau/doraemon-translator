@@ -125,9 +125,9 @@ export function App() {
           {/* Doraemon's pocket divider */}
           <div className="hidden md:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center justify-center z-10">
             <div className="w-20 h-20 bg-white rounded-full shadow-2xl border-4 border-blue-500 flex items-center justify-center overflow-hidden">
-              <img 
-                src="/images/doraemon.png" 
-                alt="Doraemon" 
+              <img
+                src="/images/doraemon.png"
+                alt="Doraemon"
                 className={`w-full h-full object-cover rounded-full transition-transform duration-300 ${
                   isLoading ? 'animate-spin' : ''
                 }`}
@@ -140,7 +140,7 @@ export function App() {
               <label className="block text-lg font-bold text-yellow-600 mb-2">
                 Plain English Translation
               </label>
-              <div 
+              <div
                 className="w-full h-64 p-4 border-2 border-yellow-300 rounded-xl bg-yellow-50 text-gray-800 overflow-y-auto [&_p]:mb-5"
                 dangerouslySetInnerHTML={{
                   __html: output || 'Your translation will appear here...'
