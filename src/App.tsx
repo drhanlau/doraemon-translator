@@ -5,13 +5,13 @@ export function App({ locale = 'en' }: { locale?: 'en' | 'zh-TW' }) {
     title: locale === 'zh-TW' ? '哆啦A夢翻譯蒟蒻' : 'Doraemon Translation Gummy',
     subtitleSlangToEn: locale === 'zh-TW' ? '將 Z 世代俚語翻成易懂中文！' : 'Translate Gen Z Slang to Plain English!',
     subtitleEnToSlang: locale === 'zh-TW' ? '把一般中文轉成 Z 世代俚語！' : 'Convert Plain English to Gen Z Slang!',
-    toggleLeft: locale === 'zh-TW' ? '中文 → 俚語' : 'English to Slang',
-    toggleRight: locale === 'zh-TW' ? '俚語 → 中文' : 'Slang to English',
+    toggleLeft: locale === 'zh-TW' ? '俚語 → 中文' : 'Slang to English',
+    toggleRight: locale === 'zh-TW' ? '中文 → 俚語' : 'English to Slang',
     inputLabelSlang: locale === 'zh-TW' ? 'Z 世代俚語輸入' : 'Gen Z Slang Input',
     inputLabelEn: locale === 'zh-TW' ? '一般中文輸入' : 'Plain English Input',
     inputPlaceholderSlang:
       locale === 'zh-TW'
-        ? "請輸入 Z 世代俚語...（例如：'no cap, that's bussin fr fr'）"
+        ? "請輸入 Z 世代俚語...（例如：'好牛，显眼包,delulu'）"
         : "Type your Gen Z slang here... (e.g., 'no cap, that's bussin fr fr')",
     inputPlaceholderEn:
       locale === 'zh-TW'
@@ -50,7 +50,7 @@ export function App({ locale = 'en' }: { locale?: 'en' | 'zh-TW' }) {
                   ? '你是一個有用的翻譯助手，將 Z 世代俚語和網路用語轉換成清楚易懂的中文。首先提供翻譯，然後提供解釋讓人們理解俚語的意思。如果輸入包含多個俚語詞彙，請逐一解釋。要友善且資訊豐富。以 html 格式輸出，不要使用 markdown 前綴'
                   : 'You are a helpful translator that converts Gen Z slang and internet language into clear, plain English. First provide the translation. Then provide explanations that people to understand what the slang means. If the input contains multiple slang terms, explain each one. Be friendly and informative. Output in html format without markdown prefix')
               : (locale === 'zh-TW'
-                  ? '你是一個有用的翻譯助手，將一般中文轉換成 Z 世代俚語和網路用語。首先直接提供俚語版本，然後提供使用的俚語詞彙解釋。要富有創意且使用真實的 Z 世代俚語。要友善且資訊豐富。以 html 格式輸出，不要使用 markdown 前綴'
+                  ? '你是一個有用的翻譯助手，將一般中文轉換成 Z 世代俚語和網路用語。首先直接提供俚語版本，不需要抬头 header。然後提供使用的俚語詞彙解釋。要富有創意且使用真實的 Z 世代俚語。要友善且資訊豐富。以 html 格式輸出，不要使用 markdown 前綴'
                   : 'You are a helpful translator that converts plain English into Gen Z slang and internet language. First provide the slang version. Then provide explanations of the slang terms used. Be creative and use authentic Gen Z slang. Be friendly and informative. Output in html format without markdown prefix')
           },
           {
