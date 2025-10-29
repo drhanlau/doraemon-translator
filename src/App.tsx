@@ -1,13 +1,38 @@
 import React, { useState } from 'react';
 import { ArrowRightIcon, Loader2 } from 'lucide-react';
-export function App() {
+export function App({ locale = 'en' }: { locale?: 'en' | 'zh-TW' }) {
+  const ui = {
+    title: locale === 'zh-TW' ? '哆啦A夢翻譯蒟蒻' : 'Doraemon Translation Gummy',
+    subtitleSlangToEn: locale === 'zh-TW' ? '將 Z 世代俚語翻成易懂中文！' : 'Translate Gen Z Slang to Plain English!',
+    subtitleEnToSlang: locale === 'zh-TW' ? '把一般中文轉成 Z 世代俚語！' : 'Convert Plain English to Gen Z Slang!',
+    toggleLeft: locale === 'zh-TW' ? '中文 → 俚語' : 'English to Slang',
+    toggleRight: locale === 'zh-TW' ? '俚語 → 中文' : 'Slang to English',
+    inputLabelSlang: locale === 'zh-TW' ? 'Z 世代俚語輸入' : 'Gen Z Slang Input',
+    inputLabelEn: locale === 'zh-TW' ? '一般中文輸入' : 'Plain English Input',
+    inputPlaceholderSlang:
+      locale === 'zh-TW'
+        ? "請輸入 Z 世代俚語...（例如：'no cap, that's bussin fr fr'）"
+        : "Type your Gen Z slang here... (e.g., 'no cap, that's bussin fr fr')",
+    inputPlaceholderEn:
+      locale === 'zh-TW'
+        ? "請輸入一般中文...（例如：'這真的很酷很厲害'）"
+        : "Type your plain English here... (e.g., 'That's really cool and amazing')",
+    outputLabelSlang: locale === 'zh-TW' ? 'Z 世代俚語翻譯' : 'Gen Z Slang Translation',
+    outputLabelEn: locale === 'zh-TW' ? '一般中文翻譯' : 'Plain English Translation',
+    outputPlaceholder: locale === 'zh-TW' ? '翻譯結果將顯示在這裡…' : 'Your translation will appear here...',
+    btnTranslate: locale === 'zh-TW' ? '翻譯' : 'Translate',
+    btnTranslating: locale === 'zh-TW' ? '翻譯中…' : 'Translating...',
+    emptyInputMsgSlang: locale === 'zh-TW' ? '請先輸入 Z 世代俚語！' : 'Please enter some Gen Z slang to translate!',
+    emptyInputMsgEn: locale === 'zh-TW' ? '請先輸入一般英文！' : 'Please enter some plain English to convert!',
+    genericError: locale === 'zh-TW' ? '抱歉，翻譯時發生錯誤，請再試一次。' : 'Sorry, there was an error translating your text. Please try again.'
+  };
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSlangToEnglish, setIsSlangToEnglish] = useState(true);
   const handleTranslate = async () => {
     if (!input.trim()) {
-      setOutput(isSlangToEnglish ? 'Please enter some Gen Z slang to translate!' : 'Please enter some plain English to convert!');
+      setOutput(isSlangToEnglish ? ui.emptyInputMsgSlang : ui.emptyInputMsgEn);
       return;
     }
 
@@ -21,14 +46,22 @@ export function App() {
           {
             role: 'system',
             content: isSlangToEnglish
-              ? 'You are a helpful translator that converts Gen Z slang and internet language into clear, plain English. First provide the translation. Then provide explanations that people to understand what the slang means. If the input contains multiple slang terms, explain each one. Be friendly and informative. Output in html format without markdown prefix'
-              : 'You are a helpful translator that converts plain English into Gen Z slang and internet language. First provide the slang version. Then provide explanations of the slang terms used. Be creative and use authentic Gen Z slang. Be friendly and informative. Output in html format without markdown prefix'
+              ? (locale === 'zh-TW'
+                  ? '你是一個有用的翻譯助手，將 Z 世代俚語和網路用語轉換成清楚易懂的中文。首先提供翻譯，然後提供解釋讓人們理解俚語的意思。如果輸入包含多個俚語詞彙，請逐一解釋。要友善且資訊豐富。以 html 格式輸出，不要使用 markdown 前綴'
+                  : 'You are a helpful translator that converts Gen Z slang and internet language into clear, plain English. First provide the translation. Then provide explanations that people to understand what the slang means. If the input contains multiple slang terms, explain each one. Be friendly and informative. Output in html format without markdown prefix')
+              : (locale === 'zh-TW'
+                  ? '你是一個有用的翻譯助手，將一般中文轉換成 Z 世代俚語和網路用語。首先直接提供俚語版本，然後提供使用的俚語詞彙解釋。要富有創意且使用真實的 Z 世代俚語。要友善且資訊豐富。以 html 格式輸出，不要使用 markdown 前綴'
+                  : 'You are a helpful translator that converts plain English into Gen Z slang and internet language. First provide the slang version. Then provide explanations of the slang terms used. Be creative and use authentic Gen Z slang. Be friendly and informative. Output in html format without markdown prefix')
           },
           {
             role: 'user',
             content: isSlangToEnglish
-              ? `Translate this Gen Z slang to plain English: "${input}"`
-              : `Convert this plain English to Gen Z slang: "${input}"`
+              ? (locale === 'zh-TW'
+                  ? `將這個 Z 世代俚語翻譯成易懂的中文："${input}"`
+                  : `Translate this Gen Z slang to plain English: "${input}"`)
+              : (locale === 'zh-TW'
+                  ? `將這個一般中文轉換成 Z 世代俚語："${input}"`
+                  : `Convert this plain English to Gen Z slang: "${input}"`)
           }
         ],
         max_tokens: 200,
@@ -55,11 +88,11 @@ export function App() {
       }
 
       const data = await response.json();
-      const translation = data.choices[0]?.message?.content || 'Sorry, I couldn\'t translate that.';
+      const translation = data.choices[0]?.message?.content || (locale === 'zh-TW' ? '抱歉，我無法翻譯這段文字。' : 'Sorry, I couldn\'t translate that.');
       setOutput(translation);
     } catch (error) {
       console.error('Translation error:', error);
-      setOutput('Sorry, there was an error translating your text. Please try again.');
+      setOutput(ui.genericError);
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +118,7 @@ export function App() {
                 <div className="w-8 h-8 bg-white rounded-full" />
               </div>
             </div>
-            <h1 className="text-4xl font-bold">Doraemon Translation Gummy</h1>
+            <h1 className="text-4xl font-bold">{ui.title}</h1>
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
               <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
                 <div className="w-8 h-8 bg-white rounded-full" />
@@ -93,12 +126,12 @@ export function App() {
             </div>
           </div>
           <p className="text-center mt-2 text-blue-100">
-            {isSlangToEnglish ? 'Translate Gen Z Slang to Plain English!' : 'Convert Plain English to Gen Z Slang!'}
+            {isSlangToEnglish ? ui.subtitleSlangToEn : ui.subtitleEnToSlang}
           </p>
           {/* Translation mode toggle */}
           <div className="flex items-center justify-center gap-4 mt-4">
             <span className={`text-sm font-medium ${!isSlangToEnglish ? 'text-blue-200' : 'text-white'}`}>
-              English to Slang
+              {ui.toggleLeft}
             </span>
             <button
               onClick={() => setIsSlangToEnglish(!isSlangToEnglish)}
@@ -113,7 +146,7 @@ export function App() {
               />
             </button>
             <span className={`text-sm font-medium ${isSlangToEnglish ? 'text-blue-200' : 'text-white'}`}>
-              Slang to English
+              {ui.toggleRight}
             </span>
           </div>
         </div>
@@ -123,15 +156,12 @@ export function App() {
           <div className="flex flex-col gap-4 pr-0 md:pr-4">
             <div className="bg-white rounded-2xl p-4 shadow-lg border-4 border-blue-400">
               <label className="block text-lg font-bold text-blue-600 mb-2">
-                {isSlangToEnglish ? 'Gen Z Slang Input' : 'Plain English Input'}
+                {isSlangToEnglish ? ui.inputLabelSlang : ui.inputLabelEn}
               </label>
               <textarea
                 value={input}
                 onChange={e => setInput(e.target.value)}
-                placeholder={isSlangToEnglish
-                  ? "Type your Gen Z slang here... (e.g., 'no cap, that's bussin fr fr')"
-                  : "Type your plain English here... (e.g., 'That's really cool and amazing')"
-                }
+                placeholder={isSlangToEnglish ? ui.inputPlaceholderSlang : ui.inputPlaceholderEn}
                 className="w-full h-64 p-4 border-2 border-blue-300 rounded-xl resize-none focus:outline-none focus:border-blue-500 text-gray-800"
               />
             </div>
@@ -152,12 +182,12 @@ export function App() {
           <div className="flex flex-col gap-4 pl-0 md:pl-4 mt-8 md:mt-0">
             <div className="bg-white rounded-2xl p-4 shadow-lg border-4 border-yellow-400">
               <label className="block text-lg font-bold text-yellow-600 mb-2">
-                {isSlangToEnglish ? 'Plain English Translation' : 'Gen Z Slang Translation'}
+                {isSlangToEnglish ? ui.outputLabelEn : ui.outputLabelSlang}
               </label>
               <div
                 className="w-full h-64 p-4 border-2 border-yellow-300 rounded-xl bg-yellow-50 text-gray-800 overflow-y-auto [&_p]:mb-5"
                 dangerouslySetInnerHTML={{
-                  __html: output || 'Your translation will appear here...'
+                  __html: output || ui.outputPlaceholder
                 }}
               />
             </div>
@@ -175,10 +205,10 @@ export function App() {
             } text-white`}
           >
             {isLoading ? (
-              <>Translating...</>
+              <>{ui.btnTranslating}</>
             ) : (
               <>
-                Translate <ArrowRightIcon className="w-6 h-6" />
+                {ui.btnTranslate} <ArrowRightIcon className="w-6 h-6" />
               </>
             )}
           </button>

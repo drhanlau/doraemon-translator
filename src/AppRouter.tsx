@@ -5,6 +5,7 @@ export function AppRouter() {
   return <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/c/" element={<App locale="zh-TW" />} />
         </Routes>
     </BrowserRouter>;
 }
