@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
 import { ArrowRightIcon, Loader2 } from 'lucide-react';
-export function App({ locale = 'en' }: { locale?: 'en' | 'zh-TW' }) {
+export function App({ locale = 'en' }: { locale?: 'en' | 'zh-TW' | 'ms' }) {
   const ui = {
-    title: locale === 'zh-TW' ? '哆啦A夢翻譯蒟蒻' : 'Doraemon Translation Gummy',
-    subtitleSlangToEn: locale === 'zh-TW' ? '將 Z 世代俚語翻成易懂中文！' : 'Translate Gen Z Slang to Plain English!',
-    subtitleEnToSlang: locale === 'zh-TW' ? '把一般中文轉成 Z 世代俚語！' : 'Convert Plain English to Gen Z Slang!',
-    toggleLeft: locale === 'zh-TW' ? '俚語 → 中文' : 'Slang to English',
-    toggleRight: locale === 'zh-TW' ? '中文 → 俚語' : 'English to Slang',
-    inputLabelSlang: locale === 'zh-TW' ? 'Z 世代俚語輸入' : 'Gen Z Slang Input',
-    inputLabelEn: locale === 'zh-TW' ? '一般中文輸入' : 'Plain English Input',
+    title: locale === 'zh-TW' ? '哆啦A夢翻譯蒟蒻' : locale === 'ms' ? 'Doraemon Translation Gummy' : 'Doraemon Translation Gummy',
+    subtitleSlangToEn: locale === 'zh-TW' ? '將 Z 世代俚語翻成易懂中文！' : locale === 'ms' ? 'Terjemah Slanga Gen Z kepada Bahasa Melayu!' : 'Translate Gen Z Slang to Plain English!',
+    subtitleEnToSlang: locale === 'zh-TW' ? '把一般中文轉成 Z 世代俚語！' : locale === 'ms' ? 'Tukar Bahasa Melayu kepada Slanga Gen Z!' : 'Convert Plain English to Gen Z Slang!',
+    toggleLeft: locale === 'zh-TW' ? '俚語 → 中文' : locale === 'ms' ? 'Slanga → Bahasa Melayu' : 'Slang to English',
+    toggleRight: locale === 'zh-TW' ? '中文 → 俚語' : locale === 'ms' ? 'Bahasa Melayu → Slanga' : 'English to Slang',
+    inputLabelSlang: locale === 'zh-TW' ? 'Z 世代俚語輸入' : locale === 'ms' ? 'Input Slanga Gen Z' : 'Gen Z Slang Input',
+    inputLabelEn: locale === 'zh-TW' ? '一般中文輸入' : locale === 'ms' ? 'Input Bahasa Melayu' : 'Plain English Input',
     inputPlaceholderSlang:
       locale === 'zh-TW'
         ? "請輸入 Z 世代俚語...（例如：'好牛，显眼包,delulu'）"
+        : locale === 'ms'
+        ? "Taip slanga Gen Z di sini... (cth: 'x pe, ')"
         : "Type your Gen Z slang here... (e.g., 'no cap, that's bussin fr fr')",
     inputPlaceholderEn:
       locale === 'zh-TW'
         ? "請輸入一般中文...（例如：'這真的很酷很厲害'）"
+        : locale === 'ms'
+        ? "Taip Bahasa Melayu di sini... (cth: 'Itu sangat hebat dan menakjubkan')"
         : "Type your plain English here... (e.g., 'That's really cool and amazing')",
-    outputLabelSlang: locale === 'zh-TW' ? 'Z 世代俚語翻譯' : 'Gen Z Slang Translation',
-    outputLabelEn: locale === 'zh-TW' ? '一般中文翻譯' : 'Plain English Translation',
-    outputPlaceholder: locale === 'zh-TW' ? '翻譯結果將顯示在這裡…' : 'Your translation will appear here...',
-    btnTranslate: locale === 'zh-TW' ? '翻譯' : 'Translate',
-    btnTranslating: locale === 'zh-TW' ? '翻譯中…' : 'Translating...',
-    emptyInputMsgSlang: locale === 'zh-TW' ? '請先輸入 Z 世代俚語！' : 'Please enter some Gen Z slang to translate!',
-    emptyInputMsgEn: locale === 'zh-TW' ? '請先輸入一般英文！' : 'Please enter some plain English to convert!',
-    genericError: locale === 'zh-TW' ? '抱歉，翻譯時發生錯誤，請再試一次。' : 'Sorry, there was an error translating your text. Please try again.'
+    outputLabelSlang: locale === 'zh-TW' ? 'Z 世代俚語翻譯' : locale === 'ms' ? 'Terjemahan Slanga Gen Z' : 'Gen Z Slang Translation',
+    outputLabelEn: locale === 'zh-TW' ? '一般中文翻譯' : locale === 'ms' ? 'Terjemahan Bahasa Melayu' : 'Plain English Translation',
+    outputPlaceholder: locale === 'zh-TW' ? '翻譯結果將顯示在這裡…' : locale === 'ms' ? 'Terjemahan akan muncul di sini...' : 'Your translation will appear here...',
+    btnTranslate: locale === 'zh-TW' ? '翻譯' : locale === 'ms' ? 'Terjemah' : 'Translate',
+    btnTranslating: locale === 'zh-TW' ? '翻譯中…' : locale === 'ms' ? 'Menterjemah...' : 'Translating...',
+    emptyInputMsgSlang: locale === 'zh-TW' ? '請先輸入 Z 世代俚語！' : locale === 'ms' ? 'Sila masukkan slanga Gen Z!' : 'Please enter some Gen Z slang to translate!',
+    emptyInputMsgEn: locale === 'zh-TW' ? '請先輸入一般中文！' : locale === 'ms' ? 'Sila masukkan Bahasa Melayu!' : 'Please enter some plain English to convert!',
+    genericError: locale === 'zh-TW' ? '抱歉，翻譯時發生錯誤，請再試一次。' : locale === 'ms' ? 'Maaf, berlaku ralat semasa menterjemah. Sila cuba lagi.' : 'Sorry, there was an error translating your text. Please try again.'
   };
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
@@ -48,9 +52,13 @@ export function App({ locale = 'en' }: { locale?: 'en' | 'zh-TW' }) {
             content: isSlangToEnglish
               ? (locale === 'zh-TW'
                   ? '你是一個有用的翻譯助手，將 Z 世代俚語和網路用語轉換成清楚易懂的中文。首先提供翻譯，然後提供解釋讓人們理解俚語的意思。如果輸入包含多個俚語詞彙，請逐一解釋。要友善且資訊豐富。以 html 格式輸出，不要使用 markdown 前綴'
+                  : locale === 'ms'
+                  ? 'Anda adalah pembantu terjemahan yang berguna yang menukar slanga Gen Z dan bahasa internet kepada Bahasa Melayu yang jelas dan mudah difahami. Pertama berikan terjemahan, kemudian berikan penjelasan untuk membantu orang memahami maksud slanga. Jika input mengandungi beberapa istilah slanga, jelaskan setiap satu. Bersikap mesra dan informatif. Output dalam format html tanpa prefix markdown'
                   : 'You are a helpful translator that converts Gen Z slang and internet language into clear, plain English. First provide the translation. Then provide explanations that people to understand what the slang means. If the input contains multiple slang terms, explain each one. Be friendly and informative. Output in html format without markdown prefix')
               : (locale === 'zh-TW'
                   ? '你是一個有用的翻譯助手，將一般中文轉換成 Z 世代俚語和網路用語。首先直接提供俚語版本，不需要抬头 header。然後提供使用的俚語詞彙解釋。要富有創意且使用真實的 Z 世代俚語。要友善且資訊豐富。以 html 格式輸出，不要使用 markdown 前綴'
+                  : locale === 'ms'
+                  ? 'Anda adalah pembantu terjemahan yang berguna yang menukar Bahasa Melayu biasa kepada slanga Gen Z dan bahasa internet. Pertama berikan versi slanga secara langsung, tidak perlu header. Kemudian berikan penjelasan istilah slanga yang digunakan. Bersikap kreatif dan gunakan slanga Gen Z yang asli. Bersikap mesra dan informatif. Output dalam format html tanpa prefix markdown'
                   : 'You are a helpful translator that converts plain English into Gen Z slang and internet language. First provide the slang version. Then provide explanations of the slang terms used. Be creative and use authentic Gen Z slang. Be friendly and informative. Output in html format without markdown prefix')
           },
           {
@@ -58,9 +66,13 @@ export function App({ locale = 'en' }: { locale?: 'en' | 'zh-TW' }) {
             content: isSlangToEnglish
               ? (locale === 'zh-TW'
                   ? `將這個 Z 世代俚語翻譯成易懂的中文："${input}"`
+                  : locale === 'ms'
+                  ? `Terjemahkan slanga Gen Z ini kepada Bahasa Melayu yang mudah difahami: "${input}"`
                   : `Translate this Gen Z slang to plain English: "${input}"`)
               : (locale === 'zh-TW'
                   ? `將這個一般中文轉換成 Z 世代俚語："${input}"`
+                  : locale === 'ms'
+                  ? `Tukar Bahasa Melayu biasa ini kepada slanga Gen Z: "${input}"`
                   : `Convert this plain English to Gen Z slang: "${input}"`)
           }
         ],
@@ -88,7 +100,7 @@ export function App({ locale = 'en' }: { locale?: 'en' | 'zh-TW' }) {
       }
 
       const data = await response.json();
-      const translation = data.choices[0]?.message?.content || (locale === 'zh-TW' ? '抱歉，我無法翻譯這段文字。' : 'Sorry, I couldn\'t translate that.');
+      const translation = data.choices[0]?.message?.content || (locale === 'zh-TW' ? '抱歉，我無法翻譯這段文字。' : locale === 'ms' ? 'Maaf, saya tidak dapat menterjemahkan teks ini.' : 'Sorry, I couldn\'t translate that.');
       setOutput(translation);
     } catch (error) {
       console.error('Translation error:', error);
